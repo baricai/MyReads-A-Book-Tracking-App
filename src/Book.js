@@ -9,13 +9,15 @@ class Book extends React.Component {
   getAuthors() {
     const book = this.props.book
 
-    if (book.author) {
-      {book.authors.map((author, index) => {
-        return (index === book.authors.length - 1) ? author : author + ', '
-      })}
-    }
+    if (book.authors) {
+      let authors = ''
 
-    return ''
+      book.authors.map((author, index) => {
+        return authors += (index === book.authors.length - 1) ? author : author + ', '
+      })
+
+      return authors
+    }
   }
 
   render() {

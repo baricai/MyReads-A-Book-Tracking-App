@@ -11,21 +11,52 @@ class SearchBooks extends React.Component {
   }
 
   updateQuery(query) {
-    if (query === '') {
-      this.setState({ books: [] })
+    this.setState({ books: [] })
 
+    if (query === '') {
       return
     }
 
     BooksAPI.search(query).then((result) => {
-      console.log(result);
-      if (result.error) {
-        this.setState({ books: [] })
-      } else {
-        this.setState({ books: result })
+      if (!result.error) {
+        let books = result.map((b) => {
+
+          let currentBook = this.props.currentBooks.filter((currentBook) => currentBook.id === b.id)[0]
+
+          if (currentBook) {
+              b.shelf = currentBook.shelf
+          }
+
+          return b
+        })
+
         books.sort(sortBy('title'))
+
+        this.setState({ books: books })
       }
     })
+  }
+
+  updateShelf = (book, shelf) => {
+    this.setState((state) => ({
+      books: state.books.map((b) => {
+        if (b.id === book.id) {
+          b.shelf = shelf
+        }
+
+        return b
+      })
+    }))
+
+    let currentBook = this.props.currentBooks.filter((currentBook) => currentBook.id === book.id)[0]
+
+    // Is current book exist update shelf else add a new one
+    if (!currentBook) {
+      let newBook = this.state.books.filter((newBook) => newBook.id === book.id)[0]
+      this.props.addBook(newBook)
+    }
+
+    this.props.onUpdateShelf(book, shelf)
   }
 
   render() {
@@ -45,7 +76,10 @@ class SearchBooks extends React.Component {
           <ol className="books-grid">
             {this.state.books.map((book) => (
               <li key={book.id}>
-                <Book book={book} />
+                <Book
+                  book={book}
+                  onUpdateShelf={this.updateShelf}
+                />
               </li>
             ))}
           </ol>

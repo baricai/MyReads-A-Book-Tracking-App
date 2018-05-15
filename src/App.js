@@ -16,8 +16,8 @@ class BooksApp extends React.Component {
     })
   }
 
-  updateBook = (book, shelf) => {
-    this.setState((state) => ({
+  updateShelf = (book, shelf) => {
+    this.setState(state => ({
       books: state.books.map((b) => {
         if (b.id === book.id) {
           b.shelf = shelf
@@ -28,24 +28,35 @@ class BooksApp extends React.Component {
     }))
 
     BooksAPI.update(book, shelf).then((response) => {
-      // console.log(response);
+
     })
   }
 
+  addBook = (book) => {
+    console.log(book);
+    this.setState(state => ({
+      books: state.books.concat([ book ])
+    }))
+  }
+
   render() {
+    const { books } = this.state
+
     return (
       <div className="app">
 
         <Route exact path="/" render={() => (
           <ListBooks
-            books={this.state.books}
-            onUpdateShelf={this.updateBook}
+            books={books}
+            onUpdateShelf={this.updateShelf}
           />
         )}/>
 
         <Route exact path="/search" render={() => (
           <SearchBooks
-            currentBooks={this.state.books}
+            currentBooks={books}
+            onUpdateShelf={this.updateShelf}
+            addBook={this.addBook}
           />
         )}/>
       </div>

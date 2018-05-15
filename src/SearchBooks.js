@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import sortBy from 'sort-by'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
@@ -22,6 +23,7 @@ class SearchBooks extends React.Component {
         this.setState({ books: [] })
       } else {
         this.setState({ books: result })
+        books.sort(sortBy('title'))
       }
     })
   }

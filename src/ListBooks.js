@@ -3,16 +3,13 @@ import Book from './Book'
 import { Link } from 'react-router-dom'
 
 class ListBooks extends React.Component {
+
   render() {
-    const { books } = this.props
+    const { books, onUpdateShelf } = this.props
 
-    let currentlyReading
-    let wantToRead
-    let read
-
-    currentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
-    wantToRead = books.filter((book) => book.shelf === 'wantToRead')
-    read = books.filter((book) => book.shelf === 'read')
+    let currentlyReading = books.filter((book) => book.shelf === 'currentlyReading')
+    let wantToRead = books.filter((book) => book.shelf === 'wantToRead')
+    let read = books.filter((book) => book.shelf === 'read')
 
     return(
       <div className="list-books">
@@ -27,7 +24,10 @@ class ListBooks extends React.Component {
                 <ol className="books-grid">
                   {currentlyReading.map((book) => (
                     <li key={book.id}>
-                      <Book book={book} />
+                      <Book
+                        book={book}
+                        onUpdateShelf={onUpdateShelf}
+                      />
                     </li>
                   ))}
                 </ol>
@@ -39,7 +39,10 @@ class ListBooks extends React.Component {
                 <ol className="books-grid">
                   {wantToRead.map((book) => (
                     <li key={book.id}>
-                      <Book book={book} />
+                      <Book
+                        book={book}
+                        onUpdateShelf={onUpdateShelf}
+                       />
                     </li>
                   ))}
                 </ol>
@@ -51,7 +54,10 @@ class ListBooks extends React.Component {
                 <ol className="books-grid">
                   {read.map((book) => (
                     <li key={book.id}>
-                      <Book book={book} />
+                      <Book
+                        book={book}
+                        onUpdateShelf={onUpdateShelf}
+                       />
                     </li>
                   ))}
                 </ol>
